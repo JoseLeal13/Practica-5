@@ -1,5 +1,6 @@
 #ifndef BOMBA_H
 #define BOMBA_H
+#include "mapa.h"
 
 #include <QGraphicsPixmapItem>
 #include <QTimer>

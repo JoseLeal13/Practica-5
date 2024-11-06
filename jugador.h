@@ -29,7 +29,6 @@ private:
 signals:
     void colocarBomba();
 
-
 public slots:
     void update();
 };

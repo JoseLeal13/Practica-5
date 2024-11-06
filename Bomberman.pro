@@ -10,6 +10,7 @@ CONFIG += c++17
 
 SOURCES += \
     bomba.cpp \
+    controlador.cpp \
     jugador.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -17,6 +18,7 @@ SOURCES += \
 
 HEADERS += \
     bomba.h \
+    controlador.h \
     jugador.h \
     mainwindow.h \
     mapa.h

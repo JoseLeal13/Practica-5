@@ -42,9 +42,8 @@ MainWindow::MainWindow(QWidget *parent)
     jugador->setPixmap(scaledPixmap);
     scene->addItem(jugador);
 
-    connect(jugador, &Jugador::colocarBomba, this, &MainWindow::colocarBomba);
+   connect(jugador, &Jugador::colocarBomba, this, &MainWindow::colocarBomba);
 
-    // Timer para actualizar el jugador
     QTimer *timer = new QTimer(this);
     connect(timer, &QTimer::timeout, jugador, &Jugador::update);
     timer->start(16);
@@ -66,10 +65,13 @@ MainWindow::~MainWindow()
 void MainWindow::colocarBomba() {
     int jugadorX = jugador->getX();
     int jugadorY = jugador->getY();
-
+    /*
     // Verificar si el espacio está libre antes de colocar la bomba
     if (mapajuego->esEspacioLibre(jugadorX, jugadorY)) {
+    }
+    */
         Bomba* bomba = new Bomba(jugadorX, jugadorY, nullptr);
         scene->addItem(bomba);
-    }
+
 }
+

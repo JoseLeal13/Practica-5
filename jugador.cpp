@@ -32,7 +32,7 @@ void Jugador::keyPressEvent(QKeyEvent* event) {
         speed_x = 5;
         break;
     case Qt::Key_Space:
-        emit colocarBomba();  // Emitir señal para colocar la bomba
+        emit colocarBomba();
         break;
     default:
         break;
@@ -59,19 +59,24 @@ void Jugador::update() {
 }
 
 void Jugador::mover(int dx, int dy) {
-    // Actualiza la posición del jugador
-    x += dx;
-    y += dy;
 
     QPointF nuevaPos = this->pos() + QPointF(dx, dy);
 
-    // Verificar colisiones en la nueva posición
     this->setPos(nuevaPos);
+
+    bool colision = false;
     for (QGraphicsItem* item : scene()->collidingItems(this)) {
         if (item != this) {
-            // Si hay una colisión, revertir el movimiento
-            this->setPos(this->pos() - QPointF(dx, dy));
-            return;
+            colision = true;
+            break;
         }
     }
+    if (!colision) {
+        x += dx;
+        y += dy;
+    } else {
+
+        this->setPos(this->pos() - QPointF(dx, dy));
+    }
 }
+

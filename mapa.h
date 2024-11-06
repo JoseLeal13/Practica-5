@@ -13,6 +13,9 @@ public:
     void generarMatriz();
     void dibujarMatriz(QGraphicsScene* scene, const QPixmap& Solido, const QPixmap& Destruible);
     bool esEspacioLibre(int x, int y);
+    int **getmatriz();
+
+    void explosionBomba(int x, int y, QGraphicsScene* scene, const QPixmap& Destruible);
 
 private:
     int filas;

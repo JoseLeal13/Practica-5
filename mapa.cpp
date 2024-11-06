@@ -53,6 +53,32 @@ void mapa::dibujarMatriz(QGraphicsScene* scene, const QPixmap& Solido, const QPi
         }
     }
 }
+
+void mapa::explosionBomba(int x, int y, QGraphicsScene* scene, const QPixmap& Destruible) {
+    int posiciones[] = {-1, 1, 0, 0}; // Arriba, Abajo, Izquierda, Derecha
+    int posicionesY[] = {0, 0, -1, 1};
+
+    // Recorre las posiciones adyacentes para destruir bloques
+    for (int i = 0; i < 4; i++) {
+        int nx = x + posiciones[i];
+        int ny = y + posicionesY[i];
+
+        if (nx >= 0 && nx < filas && ny >= 0 && ny < columnas) {
+            if (matriz[nx][ny] == 3) {  // Si el bloque es destructible
+                matriz[nx][ny] = 0; // Eliminar el bloque de la matriz
+                // Actualiza el bloque en la escena (o remueve el bloque si es necesario)
+                scene->addPixmap(Destruible.scaled(50, 50))->setPos(ny * 50, nx * 50);
+            }
+        }
+    }
+}
+
+
+int** mapa::getmatriz(){
+
+    return matriz;
+}
+/*
 bool mapa::esEspacioLibre(int x, int y) {
 
     int i = y / 50;
@@ -64,3 +90,4 @@ bool mapa::esEspacioLibre(int x, int y) {
 
     return matriz[i][j] == 0;
 }
+*/
