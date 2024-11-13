@@ -10,7 +10,7 @@
 #include "mapa.h"
 #include "bomba.h"
 #include <QTimer>
-
+#include "juego.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -40,8 +40,14 @@ private:
 
     mapa* mapajuego;
 
+    QPushButton *botonStart;
+    QGraphicsTextItem *bienvenidaTexto;
+
+    Juego *juego;
+
 private slots:
     void colocarBomba();
+    void empezarJuego();
 
 };
 #endif // MAINWINDOW_H

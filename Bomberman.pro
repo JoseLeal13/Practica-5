@@ -13,6 +13,7 @@ SOURCES += \
     bomba.cpp \
     controlador.cpp \
     explosion.cpp \
+    juego.cpp \
     jugador.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -23,6 +24,7 @@ HEADERS += \
     bomba.h \
     controlador.h \
     explosion.h \
+    juego.h \
     jugador.h \
     mainwindow.h \
     mapa.h

@@ -1,8 +1,9 @@
 #ifndef ARREGLOBOMBAS_H
 #define ARREGLOBOMBAS_H
-#include <vector>
+#include "mapa.h"
 #include "bomba.h"
 #include <QObject>
+
 using namespace std;
 
 class ArregloBombas : public QObject
@@ -15,11 +16,11 @@ public:
     void crearUnaBomba(int x, int y);
 
 public slots:
-    //void bombaExplotada();
+    void bombaExplotada();
 
 private:
-    vector<Bomba*> ArrBombas;
-    int totalBombas;
+    Bomba* bombaActiva; // Puntero para la bomba activa
+    mapa* nuevoMapa;
 };
 
 #endif // ARREGLOBOMBAS_H
