@@ -1,8 +1,9 @@
+
 #include "bomba.h"
 #include <QGraphicsScene>
 
-Bomba::Bomba(int x, int y, QGraphicsItem* parent)
-    : QObject(), QGraphicsPixmapItem(parent), timer(new QTimer(this))
+Bomba::Bomba(int x, int y, mapa* mapaRef, QGraphicsItem* parent)
+    : QObject(), QGraphicsPixmapItem(parent), timer(new QTimer(this)), mapaRef(mapaRef)
 {
     QPixmap bombaPixmap("C:\\Users\\Lenovo\\Pictures\\bomba normal.jpg");
     setPixmap(bombaPixmap.scaled(45, 45));
@@ -19,8 +20,15 @@ Bomba::~Bomba() {
 void Bomba::explotar() {
     QPixmap explosionPixmap("C:\\Users\\Lenovo\\Pictures\\bomba explosion.png");
     explosionPixmap = explosionPixmap.scaled(45, 45);
+    setPixmap(explosionPixmap);
 
-    // Posiciones de la explosión en las casillas adyacentes (50x50 píxeles)
+    int fila = pos().y() / 50;
+    int columna = pos().x() / 50;
+
+    // Llama a explosionBomba para eliminar los bloques destruibles adyacentes
+    mapaRef->explosionBomba(fila, columna, scene(), explosionPixmap);
+
+    // Código para crear y agregar explosiones adyacentes
     QList<QPointF> posicionesExplotar = {
         QPointF(pos().x() - 50, pos().y()),     // Izquierda
         QPointF(pos().x() + 50, pos().y()),     // Derecha
@@ -28,31 +36,26 @@ void Bomba::explotar() {
         QPointF(pos().x(), pos().y() + 50)      // Abajo
     };
 
-    // Añadir las explosiones adyacentes a la escena
-    QList<QGraphicsPixmapItem*> explosiones;
+    QList<Explosion*> explosiones;
     for (const QPointF& posExplosion : posicionesExplotar) {
-        QGraphicsPixmapItem* explosion = new QGraphicsPixmapItem(explosionPixmap);
-        explosion->setPos(posExplosion);
+        Explosion* explosion = new Explosion(posExplosion);
         scene()->addItem(explosion);
         explosiones.append(explosion);
     }
-    setPixmap(explosionPixmap);
-    qDebug() << "Bomba central explotada en:" << pos();
 
-    // Sincronizamos la eliminación de la bomba central y las explosiones
     QTimer::singleShot(500, this, [this, explosiones]() {
-        // Eliminar la bomba central
         if (scene()) {
-            scene()->removeItem(this);  // Remover la bomba central de la escena
+            scene()->removeItem(this);
         }
-        delete this;  // Eliminar la bomba
+        delete this;
 
-        // Eliminar las explosiones adyacentes
-        for (QGraphicsPixmapItem* explosion : explosiones) {
+        for (Explosion* explosion : explosiones) {
             if (explosion->scene()) {
-                explosion->scene()->removeItem(explosion);  // Remover la explosión de la escena
+                explosion->scene()->removeItem(explosion);
             }
-            delete explosion;  // Eliminar el objeto explosión
+            delete explosion;
         }
     });
+
+    emit explosionCompleta();
 }

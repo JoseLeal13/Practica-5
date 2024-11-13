@@ -1,3 +1,4 @@
+
 #include "mapa.h"
 #include <ctime>
 #include <cstdlib>
@@ -58,20 +59,26 @@ void mapa::explosionBomba(int x, int y, QGraphicsScene* scene, const QPixmap& De
     int posiciones[] = {-1, 1, 0, 0}; // Arriba, Abajo, Izquierda, Derecha
     int posicionesY[] = {0, 0, -1, 1};
 
-    // Recorre las posiciones adyacentes para destruir bloques
     for (int i = 0; i < 4; i++) {
         int nx = x + posiciones[i];
         int ny = y + posicionesY[i];
 
         if (nx >= 0 && nx < filas && ny >= 0 && ny < columnas) {
-            if (matriz[nx][ny] == 3) {  // Si el bloque es destructible
-                matriz[nx][ny] = 0; // Eliminar el bloque de la matriz
-                // Actualiza el bloque en la escena (o remueve el bloque si es necesario)
-                scene->addPixmap(Destruible.scaled(50, 50))->setPos(ny * 50, nx * 50);
+            if (matriz[nx][ny] == 3) {  // Si el bloque es destruible
+                matriz[nx][ny] = 0;
+
+                QList<QGraphicsItem*> items = scene->items(QRectF(ny * 50, nx * 50, 50, 50));
+                for (QGraphicsItem* item : items) {
+                    if (item->scene() == scene && item->type() == QGraphicsPixmapItem::Type) {
+                        scene->removeItem(item);
+                        delete item;
+                    }
+                }
             }
         }
     }
 }
+
 
 
 int** mapa::getmatriz(){

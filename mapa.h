@@ -21,6 +21,8 @@ private:
     int filas;
     int columnas;
     int** matriz;
+
+
 };
 
 #endif // MAPA_H
