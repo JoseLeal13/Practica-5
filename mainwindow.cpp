@@ -1,4 +1,3 @@
-
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -62,11 +61,10 @@ MainWindow::~MainWindow()
     delete mapajuego; // Limpieza del objeto mapa
     delete jugador;   // Limpieza del jugador
 }
-
 void MainWindow::colocarBomba() {
     int jugadorX = jugador->getX();
     int jugadorY = jugador->getY();
-/*
+    /*
     // Verificar si el espacio está libre antes de colocar la bomba
     if (mapajuego->esEspacioLibre(jugadorX, jugadorY)) {
     Bomba* bomba = new Bomba(jugadorX, jugadorY, nullptr);
