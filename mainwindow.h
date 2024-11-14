@@ -11,6 +11,7 @@
 #include "bomba.h"
 #include <QTimer>
 #include "juego.h"
+#include "controlador.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -44,6 +45,7 @@ private:
     QGraphicsTextItem *bienvenidaTexto;
 
     Juego *juego;
+    Controlador* controlador;
 
 private slots:
     void colocarBomba();

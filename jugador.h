@@ -19,6 +19,7 @@ public:
     int getVidas() const; // Método para obtener las vidas restantes
     void keyPressEvent(QKeyEvent* event);
     void keyReleaseEvent(QKeyEvent* event);
+    void setVidas(int nuevasVidas);
 
 private:
     int x;
@@ -37,6 +38,7 @@ private:
 
 signals:
     void colocarBomba();
+    void juegoPerdido();
 
 public slots:
     void update();

@@ -17,7 +17,8 @@ SOURCES += \
     jugador.cpp \
     main.cpp \
     mainwindow.cpp \
-    mapa.cpp
+    mapa.cpp \
+    puerta.cpp
 
 HEADERS += \
     arreglobombas.h \
@@ -27,7 +28,8 @@ HEADERS += \
     juego.h \
     jugador.h \
     mainwindow.h \
-    mapa.h
+    mapa.h \
+    puerta.h
 
 FORMS += \
     mainwindow.ui

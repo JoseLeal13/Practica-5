@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "controlador.h"  // Asegúrate de incluir el archivo del controlador
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -41,6 +42,12 @@ MainWindow::MainWindow(QWidget *parent)
     // Conectar la señal del botón con la función empezarJuego
     connect(botonStart, &QPushButton::clicked, this, &MainWindow::empezarJuego);
 
+    // Inicializar controlador
+    controlador = new Controlador();  // Asegúrate de instanciar el controlador
+
+    // Conectar la señal de fin de juego a la función de menú de fin de juego
+    connect(controlador, &Controlador::juegoPerdido, this, &MainWindow::mostrarMenuPerdiste);
+
     // Temporizador (si es necesario)
     QTimer *timer = new QTimer(this);
     timer->start(16);
@@ -54,15 +61,7 @@ MainWindow::~MainWindow()
     delete botonStart; // Limpieza del botón de inicio
     delete bienvenidaTexto; // Limpieza del texto de bienvenida
     delete juego; // Limpieza de la instancia de Juego
-}
-
-void MainWindow::colocarBomba() {
-    int jugadorX = jugador->getX();
-    int jugadorY = jugador->getY();
-
-    // Colocar la bomba
-    Bomba* bomba = new Bomba(jugadorX, jugadorY, mapajuego, nullptr);
-    scene->addItem(bomba);
+    delete controlador; // Limpieza del controlador
 }
 
 void MainWindow::empezarJuego() {
@@ -73,44 +72,23 @@ void MainWindow::empezarJuego() {
     scene->setBackgroundBrush(Qt::transparent);
 
     // Ocultar el botón de inicio en lugar de removerlo de la escena
-    botonStart->setVisible(false);  // Esto lo hace invisible, pero no lo elimina de la escena
+    botonStart->setVisible(false);
 
-    // Crear una nueva instancia de Juego
-    juego = new Juego();
+    // Iniciar el juego
+    controlador->dibujar(scene, QPixmap("solido.png"), QPixmap("destruible.png"));
+}
 
-    // Iniciar el juego (configuración inicial, como el mapa, jugador, etc.)
-    juego->iniciarJuego(scene);
+void MainWindow::mostrarMenuPerdiste() {
+    QMessageBox msgBox;
+    msgBox.setWindowTitle("Perdiste");
+    msgBox.setText("Has perdido todas tus vidas. ¿Quieres volver a intentarlo?");
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    msgBox.setDefaultButton(QMessageBox::Yes);
 
-    // Crear las imágenes y elementos del mapa después de presionar "Start"
-    QPixmap Solido("C:\\Users\\Lenovo\\Pictures\\bmpSolido.jpg");
-    QPixmap Destruible("C:\\Users\\Lenovo\\Downloads\\bmpDestruible.png");
-    QPixmap Base("C:\\Users\\Lenovo\\Pictures\\base.jpg");
-
-    // Ajustar el fondo del juego
-    scene->setBackgroundBrush(Base.scaled(scene->sceneRect().width(), scene->sceneRect().height(), Qt::KeepAspectRatioByExpanding));
-
-    // Inicializar el mapa
-    mapajuego = new mapa(15, 17);  // Inicializar mapa con filas y columnas
-    mapajuego->generarMatriz();             // Generar la matriz del mapa
-    mapajuego->dibujarMatriz(scene, Solido, Destruible); // Dibujar el mapa en la escena
-
-    // Configuración del jugador
-    QPixmap pixmap("C:\\Users\\Lenovo\\Pictures\\bomberman.png");
-    QPixmap scaledPixmap = pixmap.scaled(50, 50, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-    jugador = new Jugador(1 * 50, 1 * 50);  // Ajusta la posición del jugador
-    jugador->setPixmap(scaledPixmap);
-    scene->addItem(jugador);
-
-    connect(jugador, &Jugador::colocarBomba, this, &MainWindow::colocarBomba);
-
-    // Temporizador
-    QTimer *timer = new QTimer(this);
-    connect(timer, &QTimer::timeout, jugador, &Jugador::update);
-    timer->start(16);
-
-    // Ajustar el tamaño de la vista en función de la escena
-    view->setFixedSize(scene->sceneRect().width() + 2, scene->sceneRect().height() + 2);
-
-    // Hacer visible la vista para que se muestre el juego
-    view->show();
+    int resultado = msgBox.exec();
+    if (resultado == QMessageBox::Yes) {
+        controlador->reiniciarJuego();  // Reinicia el juego si el jugador quiere volver a intentarlo
+    } else {
+        // Aquí puedes cerrar el juego o volver al menú principal
+    }
 }

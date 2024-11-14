@@ -1,4 +1,4 @@
-
+#include "puerta.h"
 #include "mapa.h"
 #include <ctime>
 #include <cstdlib>
@@ -84,6 +84,23 @@ void mapa::explosionBomba(int x, int y, QGraphicsScene* scene, const QPixmap& De
 int** mapa::getmatriz(){
 
     return matriz;
+}
+
+void mapa::colocarPuertaAleatoria(QGraphicsScene* scene, const QPixmap& pixmapPuerta) {
+    srand(time(nullptr));
+
+    int i, j;
+    do {
+        i = rand() % filas;
+        j = rand() % columnas;
+    } while (matriz[i][j] != 3);  // Busca un bloque destruible al azar
+
+    // Coloca la puerta debajo del bloque destruible
+    Puerta* puerta = new Puerta(pixmapPuerta);
+    puerta->setPos(j * 50, i * 50);  // Posición en la escena
+    scene->addItem(puerta);
+
+    connect(puerta, &Puerta::jugadorGanado, this, &Controlador::mostrarMenuGanaste);  // Conecta la señal de la puerta a la función de victoria
 }
 /*
 bool mapa::esEspacioLibre(int x, int y) {

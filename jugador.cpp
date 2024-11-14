@@ -191,9 +191,12 @@ bool Jugador::verificarColisionConExplosion() {
 void Jugador::perderVida() {
     vidas--;
     if (vidas <= 0) {
-        // Aquí puedes añadir lógica para manejar el "Game Over"
         qDebug() << "Game Over";
+        emit juegoPerdido();
     } else {
         qDebug() << "Vidas restantes:" << vidas;
     }
+}
+void Jugador::setVidas(int nuevasVidas) {
+    vidas = nuevasVidas;  // Establece el nuevo número de vidas
 }

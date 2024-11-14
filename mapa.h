@@ -4,6 +4,7 @@
 #include <QGraphicsScene>
 #include <QPixmap>
 #include <QGraphicsPixmapItem>
+#include "control.h"
 
 class mapa {
 public:
@@ -16,6 +17,7 @@ public:
     int **getmatriz();
 
     void explosionBomba(int x, int y, QGraphicsScene* scene, const QPixmap& Destruible);
+    void colocarPuertaAleatoria(QGraphicsScene* scene, const QPixmap& pixmapPuerta);
 
 private:
     int filas;

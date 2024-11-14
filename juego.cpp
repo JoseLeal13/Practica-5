@@ -68,3 +68,14 @@ void Juego::actualizarTiempo() {
         tiempoTexto->setPlainText("Tiempo: " + QString::number(tiempo));
     }
 }
+void setScene(QGraphicsScene* scene) {
+    sceneActual = scene;
+}
+
+void iniciarJuego() {
+    if (sceneActual) {
+        oMapa->generarMatriz();
+        oMapa->colocarPuertaAleatoria(sceneActual, pixmapPuerta);  // Colocar la puerta
+        dibujar(sceneActual, pixmapSolido, pixmapDestruible);      // Dibujar el mapa y elementos
+    }
+}
