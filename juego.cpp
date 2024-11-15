@@ -57,25 +57,42 @@ void Juego::empezarJuego() {
     juegoIniciado = true;
 }
 
-void Juego::iniciarJuego(QGraphicsScene* scene) {
-    // Ahora los elementos ya se agregaron en 'empezarJuego', por lo que no es necesario volver a agregar aquí.
-    // Esto puede ser útil si necesitas configurar más elementos adicionales o inicializar algún otro objeto.
+void Juego::setScene(QGraphicsScene* scene) {
+    sceneActual = scene;
+}
+
+void Juego::iniciarJuego() {
+    if (sceneActual) {
+        oMapa->generarMatriz();
+        oMapa->colocarPuertaAleatoria(sceneActual, pixmapPuerta);  // Colocar la puerta
+        oMapa->dibujarMatriz(sceneActual, pixmapSolido, pixmapDestruible);  // Dibujar el mapa
+    }
 }
 
 void Juego::actualizarTiempo() {
     if (juegoIniciado) {
         tiempo++;
+        if (!tiempoTexto) {
+            tiempoTexto = new QGraphicsTextItem();
+            tiempoTexto->setDefaultTextColor(Qt::black);
+            tiempoTexto->setFont(QFont("Arial", 18));
+            tiempoTexto->setPos(10, 10);
+            addItem(tiempoTexto);
+        }
         tiempoTexto->setPlainText("Tiempo: " + QString::number(tiempo));
     }
 }
-void setScene(QGraphicsScene* scene) {
-    sceneActual = scene;
-}
+void Juego::CambiarNivel() {
+    clear();
+    tiempo = 0;
+    puntuacion = 0;
+    tiempoTexto->setPlainText("Tiempo: 0");
+    puntuacionTexto->setPlainText("Puntuación: 0");
 
-void iniciarJuego() {
-    if (sceneActual) {
-        oMapa->generarMatriz();
-        oMapa->colocarPuertaAleatoria(sceneActual, pixmapPuerta);  // Colocar la puerta
-        dibujar(sceneActual, pixmapSolido, pixmapDestruible);      // Dibujar el mapa y elementos
-    }
+    oMapa->generarMatriz();
+    oMapa->colocarPuertaAleatoria(sceneActual, pixmapPuerta);  // Colocar la puerta en el nuevo nivel
+    oMapa->dibujarMatriz(sceneActual, pixmapSolido, pixmapDestruible);  // Dibujar los nuevos elementos del mapa
+
+    // Re-iniciar el temporizador si es necesario
+    tiempo_partida->start(1000);  // Reiniciar el temporizador para el nuevo nivel
 }

@@ -12,6 +12,7 @@
 #include <QTimer>
 #include "juego.h"
 #include "controlador.h"
+#include <QMessageBox>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {

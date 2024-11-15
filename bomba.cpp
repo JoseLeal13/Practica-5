@@ -26,7 +26,7 @@ void Bomba::explotar() {
     int columna = pos().x() / 50;
 
     // Llama a explosionBomba para eliminar los bloques destruibles adyacentes
-    mapaRef->explosionBomba(fila, columna, scene(), explosionPixmap);
+    mapaRef->explosionBomba(fila, columna, scene());
 
     // Código para crear y agregar explosiones adyacentes
     QList<QPointF> posicionesExplotar = {

@@ -1,35 +1,40 @@
-// controlador.h
 #ifndef CONTROLADOR_H
 #define CONTROLADOR_H
 
-#include "mapa.h"
+#include <QApplication>
 #include "jugador.h"
 #include <QObject>
 #include <QGraphicsScene>
 #include <QPixmap>
 #include "puerta.h"
+#include "mapa.h"
+#include "juego.h"
 
 class Controlador : public QObject {
     Q_OBJECT
 
 public:
     Controlador();
-    void mostrarMenuPerdiste();
     void reiniciarJuego();
     void setScene(QGraphicsScene* scene); // Nuevo método
     void detectarColisiones();
-    void mostrarMenuGanaste();
+    void inicializarPuerta(const QPixmap& pixmapPuerta);
+
 
 private:
-    mapa* oMapa;
-    Jugador* jugador; // Agrega el puntero a jugador como miembro de la clase
+    mapa* oMapa;  // Puntero a mapa
+    Jugador* jugador;
     QGraphicsScene* sceneActual;
     QPixmap pixmapSolido;
     QPixmap pixmapDestruible;
     Puerta* puerta;
+    Juego* juego;
 
-    void CambiarNivel();
-    void dibujar(QGraphicsScene* scene, const QPixmap& solido, const QPixmap& destruible);
+public slots:
+    void mostrarMenuGanaste();
+    void mostrarMenuPerdiste();
+signals:
+    void juegoPerdido();
 };
 
 #endif // CONTROLADOR_H

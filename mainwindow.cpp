@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "controlador.h"  // Asegúrate de incluir el archivo del controlador
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -8,87 +7,98 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    // Inicialización de la vista y la escena
     int filas = 15;
     int columnas = 17;
-    int tileSize = 50;  // Tamaño de cada celda en píxeles
+    int tileSize = 50;
+
+    // Inicialización de la vista y la escena
     view = new QGraphicsView(this);
     scene = new QGraphicsScene(this);
     int sceneWidth = columnas * tileSize;
     int sceneHeight = filas * tileSize;
     scene->setSceneRect(0, 0, sceneWidth, sceneHeight);
     view->setScene(scene);
-    view->setGeometry(50, 50, sceneWidth, sceneHeight); // Ajuste de la vista
+    view->setGeometry(50, 50, sceneWidth, sceneHeight);
 
-    // Establecer una imagen de fondo para el menú de bienvenida
+    // Fondo del menú de bienvenida
     QPixmap fondoMenu("C:\\Users\\Lenovo\\Pictures\\bombermanFondo.jpg");
     scene->setBackgroundBrush(fondoMenu.scaled(sceneWidth, sceneHeight));
 
-    // Crear y mostrar pantalla de bienvenida con texto
-    bienvenidaTexto = new QGraphicsTextItem();
-    bienvenidaTexto->setPlainText("Bienvenido al Juego");
+    // Texto de bienvenida
+    bienvenidaTexto = new QGraphicsTextItem("Bienvenido al Juego");
     bienvenidaTexto->setDefaultTextColor(Qt::white);
     bienvenidaTexto->setFont(QFont("Arial", 24));
-    bienvenidaTexto->setPos(sceneWidth / 2 - bienvenidaTexto->boundingRect().width() / 2, 100); // Centrado horizontalmente
+    bienvenidaTexto->setPos(sceneWidth / 2 - bienvenidaTexto->boundingRect().width() / 2, 100);
     scene->addItem(bienvenidaTexto);
 
-    // Crear y configurar el botón de inicio
+    // Botón de inicio
     botonStart = new QPushButton("Iniciar", this);
     int botonWidth = 150;
     int botonHeight = 50;
-    botonStart->setGeometry(sceneWidth / 2 - botonWidth / 2, sceneHeight / 2 + 100, botonWidth, botonHeight);  // Centrado horizontalmente
+    botonStart->setGeometry(sceneWidth / 2 - botonWidth / 2, sceneHeight / 2 + 100, botonWidth, botonHeight);
     botonStart->show();
-
-    // Conectar la señal del botón con la función empezarJuego
     connect(botonStart, &QPushButton::clicked, this, &MainWindow::empezarJuego);
+    connect(controlador, &Controlador::juegoPerdido, controlador, &Controlador::mostrarMenuPerdiste);
+    // Inicialización del mapa y controlador
+    mapajuego = new mapa(filas, columnas);  // Crear el objeto de mapa
+    controlador = new Controlador();  // Pasar la escena y el mapa al controlador
 
-    // Inicializar controlador
-    controlador = new Controlador();  // Asegúrate de instanciar el controlador
-
-    // Conectar la señal de fin de juego a la función de menú de fin de juego
-    connect(controlador, &Controlador::juegoPerdido, this, &MainWindow::mostrarMenuPerdiste);
-
-    // Temporizador (si es necesario)
     QTimer *timer = new QTimer(this);
     timer->start(16);
 }
 
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow() {
     delete ui;
-    delete mapajuego; // Limpieza del objeto mapa
-    delete jugador;   // Limpieza del jugador
-    delete botonStart; // Limpieza del botón de inicio
-    delete bienvenidaTexto; // Limpieza del texto de bienvenida
-    delete juego; // Limpieza de la instancia de Juego
-    delete controlador; // Limpieza del controlador
+    delete mapajuego;
+    delete controlador;
+    delete botonStart;
+    delete bienvenidaTexto;
+    delete juego;
+}
+
+void MainWindow::colocarBomba() {
+    int jugadorX = jugador->getX();
+    int jugadorY = jugador->getY();
+
+    // Colocar la bomba
+    Bomba* bomba = new Bomba(jugadorX, jugadorY, mapajuego, nullptr);
+    scene->addItem(bomba);
 }
 
 void MainWindow::empezarJuego() {
     // Limpiar la pantalla de bienvenida
     scene->removeItem(bienvenidaTexto);
+    botonStart->hide();  // Ocultar el botón
 
-    // Eliminar el fondo de la bienvenida (hacerlo transparente)
-    scene->setBackgroundBrush(Qt::transparent);
+    // Configurar el mapa y los elementos del juego
+    int filas = 15;
+    int columnas = 17;
+    int tileSize = 50;  // Tamaño de cada celda en píxeles
 
-    // Ocultar el botón de inicio en lugar de removerlo de la escena
-    botonStart->setVisible(false);
+    QPixmap Solido = QPixmap("C:\\Users\\Lenovo\\Pictures\\bmpSolido.jpg");
+    QPixmap Destruible = QPixmap("C:\\Users\\Lenovo\\Downloads\\bmpDestruible.png");
 
-    // Iniciar el juego
-    controlador->dibujar(scene, QPixmap("solido.png"), QPixmap("destruible.png"));
-}
+    // Inicializar QGraphicsView y QGraphicsScene
+    mapajuego = new mapa(filas, columnas);  // Inicializar mapa con filas y columnas
+    mapajuego->generarMatriz();             // Generar la matriz del mapa
+    mapajuego->dibujarMatriz(scene, QPixmap(Solido), QPixmap(Destruible));
+    mapajuego->colocarPuertaAleatoria(scene, QPixmap("C:\\Users\\Lenovo\\Pictures\\puerta.png"));
 
-void MainWindow::mostrarMenuPerdiste() {
-    QMessageBox msgBox;
-    msgBox.setWindowTitle("Perdiste");
-    msgBox.setText("Has perdido todas tus vidas. ¿Quieres volver a intentarlo?");
-    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-    msgBox.setDefaultButton(QMessageBox::Yes);
+    // Configuración del jugador
+    QPixmap pixmap("C:\\Users\\Lenovo\\Pictures\\bomberman.png");
+    QPixmap scaledPixmap = pixmap.scaled(50, 50, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    jugador = new Jugador(1 * tileSize, 1 * tileSize);
+    jugador->setPixmap(scaledPixmap);
+    scene->addItem(jugador);
 
-    int resultado = msgBox.exec();
-    if (resultado == QMessageBox::Yes) {
-        controlador->reiniciarJuego();  // Reinicia el juego si el jugador quiere volver a intentarlo
-    } else {
-        // Aquí puedes cerrar el juego o volver al menú principal
-    }
+    connect(jugador, &Jugador::colocarBomba, this, &MainWindow::colocarBomba);
+
+    QTimer *timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, jugador, &Jugador::update);
+    timer->start(16);
+
+    // Ajustar el tamaño de la vista en función de la escena
+    view->setFixedSize(columnas * tileSize + 2, filas * tileSize + 2); // Añadir un pequeño borde
+    jugador->setFlag(QGraphicsItem::ItemIsFocusable);
+    jugador->setFocus();
 }

@@ -2,5 +2,6 @@
 #include "puerta.h"
 
 Puerta::Puerta(const QPixmap& pixmap) : QGraphicsPixmapItem(pixmap) {
-    // Configuración inicial, si es necesaria
+    puerta->setPos(100, 100);  // Posición en la escena
+    sceneActual->addItem(puerta);
 }

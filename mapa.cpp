@@ -1,4 +1,3 @@
-#include "puerta.h"
 #include "mapa.h"
 #include <ctime>
 #include <cstdlib>
@@ -55,7 +54,7 @@ void mapa::dibujarMatriz(QGraphicsScene* scene, const QPixmap& Solido, const QPi
     }
 }
 
-void mapa::explosionBomba(int x, int y, QGraphicsScene* scene, const QPixmap& Destruible) {
+void mapa::explosionBomba(int x, int y, QGraphicsScene* scene) {
     int posiciones[] = {-1, 1, 0, 0}; // Arriba, Abajo, Izquierda, Derecha
     int posicionesY[] = {0, 0, -1, 1};
 
@@ -86,22 +85,27 @@ int** mapa::getmatriz(){
     return matriz;
 }
 
-void mapa::colocarPuertaAleatoria(QGraphicsScene* scene, const QPixmap& pixmapPuerta) {
+Puerta* mapa::colocarPuertaAleatoria(QGraphicsScene* scene, const QPixmap& pixmapPuerta) {
     srand(time(nullptr));
 
     int i, j;
     do {
         i = rand() % filas;
         j = rand() % columnas;
-    } while (matriz[i][j] != 3);  // Busca un bloque destruible al azar
+    } while (matriz[i][j] != 3);  // Encuentra un bloque destruible al azar
 
-    // Coloca la puerta debajo del bloque destruible
-    Puerta* puerta = new Puerta(pixmapPuerta);
-    puerta->setPos(j * 50, i * 50);  // Posición en la escena
+    // Crear la puerta con tamaño de 45x45
+    Puerta* puerta = new Puerta(pixmapPuerta.scaled(45, 45)); // Redimensiona la puerta a 45x45
+    // Colocarla debajo del bloque destruible (ajustar la posición en el eje Y)
+    puerta->setPos(j * 50, i * 50 + 5); // 5 píxeles más abajo para que quede debajo
+
     scene->addItem(puerta);
 
-    connect(puerta, &Puerta::jugadorGanado, this, &Controlador::mostrarMenuGanaste);  // Conecta la señal de la puerta a la función de victoria
+    return puerta; // Devuelve la puerta para que otro código maneje la conexión
 }
+
+
+
 /*
 bool mapa::esEspacioLibre(int x, int y) {
 

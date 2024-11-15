@@ -1,15 +1,16 @@
 #include <QMessageBox>
 #include "controlador.h"
-#include "jugador.h"
 
 Controlador::Controlador() {
+
+    puerta = new Puerta(QPixmap("C:\\Users\\Lenovo\\Pictures\\puerta.png"));
     oMapa = new mapa(15, 17);
     oMapa->generarMatriz();  // Genera el contenido de la matriz
     jugador = new Jugador(0, 0); // Posición inicial del jugador
 
     connect(jugador, &Jugador::juegoPerdido, this, &Controlador::mostrarMenuPerdiste);
+    connect(puerta, &Puerta::jugadorGanado, this, &Controlador::mostrarMenuGanaste);
 }
-
 void Controlador::mostrarMenuPerdiste() {
     QMessageBox msgBox;
     msgBox.setWindowTitle("Perdiste");
@@ -21,14 +22,14 @@ void Controlador::mostrarMenuPerdiste() {
     if (resultado == QMessageBox::Yes) {
         reiniciarJuego();  // Reinicia el juego si el jugador quiere volver a intentarlo
     } else {
-        // Aquí puedes cerrar el juego o volver al menú principal
+        QApplication::quit();
     }
 }
 
 void Controlador::reiniciarJuego() {
     jugador->setVidas(3);
-    CambiarNivel();
-    dibujar(sceneActual, pixmapSolido, pixmapDestruible);
+    juego->CambiarNivel();
+    oMapa->dibujarMatriz(sceneActual, pixmapSolido, pixmapDestruible);
 }
 void Controlador::detectarColisiones() {
     if (puerta && jugador && puerta->collidesWithItem(jugador)) {
@@ -49,4 +50,8 @@ void Controlador::mostrarMenuGanaste() {
     } else {
         QApplication::quit();
     }
+}
+void Controlador::inicializarPuerta(const QPixmap &pixmapPuerta) {
+
+    puerta = oMapa->colocarPuertaAleatoria(sceneActual, pixmapPuerta);
 }

@@ -19,9 +19,11 @@ public:
 
     void pantallaBienvenida();  // Mostrar la pantalla de bienvenida
     void empezarJuego();        // Método para iniciar el juego cuando el botón es presionado
-    void iniciarJuego(QGraphicsScene* scene);  // Método para iniciar el juego con la escena
+    void iniciarJuego();  // Método para iniciar el juego con la escena
+    void setScene(QGraphicsScene* scene);
 
     void actualizarTiempo();    // Método para actualizar el tiempo
+    void CambiarNivel();
 
     // Getter para el botón empezar (si es necesario)
     QPushButton* getComenzar() const { return comenzar; }
