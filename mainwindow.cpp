@@ -53,7 +53,7 @@ MainWindow::~MainWindow() {
     delete controlador;
     delete botonStart;
     delete bienvenidaTexto;
-    delete juego;
+    //delete juego;
 }
 
 void MainWindow::colocarBomba() {
@@ -75,17 +75,21 @@ void MainWindow::empezarJuego() {
     int columnas = 17;
     int tileSize = 50;  // Tamaño de cada celda en píxeles
 
-    QPixmap Solido = QPixmap("C:\\Users\\Lenovo\\Pictures\\bmpSolido.jpg");
-    QPixmap Destruible = QPixmap("C:\\Users\\Lenovo\\Downloads\\bmpDestruible.png");
+    QPixmap Solido = QPixmap("C:\\Users\\Lenovo\\Documents\\Bomberman\\build\\bmpSolido.jpg");
+    QPixmap Destruible = QPixmap("C:\\Users\\Lenovo\\Documents\\Bomberman\\build\\bmpDestruible (1).png");
+    QPixmap Puerta = QPixmap("C:\\Users\\Lenovo\\Documents\\Bomberman\\build\\puerta.png");
+
+    QPixmap Base("C:\\Users\\Lenovo\\Documents\\Bomberman\\build\\base.jpg");
+    scene->setBackgroundBrush(Base.scaled(scene->sceneRect().width(), scene->sceneRect().height()));
 
     // Inicializar QGraphicsView y QGraphicsScene
     mapajuego = new mapa(filas, columnas);  // Inicializar mapa con filas y columnas
     mapajuego->generarMatriz();             // Generar la matriz del mapa
     mapajuego->dibujarMatriz(scene, QPixmap(Solido), QPixmap(Destruible));
-    mapajuego->colocarPuertaAleatoria(scene, QPixmap("C:\\Users\\Lenovo\\Pictures\\puerta.png"));
+    mapajuego->colocarPuertaAleatoria(scene, Puerta);
 
     // Configuración del jugador
-    QPixmap pixmap("C:\\Users\\Lenovo\\Pictures\\bomberman.png");
+    QPixmap pixmap("C:\\Users\\Lenovo\\Documents\\Bomberman\\build\\bomberman.png");
     QPixmap scaledPixmap = pixmap.scaled(50, 50, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     jugador = new Jugador(1 * tileSize, 1 * tileSize);
     jugador->setPixmap(scaledPixmap);

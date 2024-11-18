@@ -3,7 +3,7 @@
 
 Controlador::Controlador() {
 
-    puerta = new Puerta(QPixmap("C:\\Users\\Lenovo\\Pictures\\puerta.png"));
+    puerta = new Puerta(QPixmap("C:\\Users\\Lenovo\\Documents\\Bomberman\\build\\base.jpg"));
     oMapa = new mapa(15, 17);
     oMapa->generarMatriz();  // Genera el contenido de la matriz
     jugador = new Jugador(0, 0); // Posición inicial del jugador

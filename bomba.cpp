@@ -5,7 +5,7 @@
 Bomba::Bomba(int x, int y, mapa* mapaRef, QGraphicsItem* parent)
     : QObject(), QGraphicsPixmapItem(parent), timer(new QTimer(this)), mapaRef(mapaRef)
 {
-    QPixmap bombaPixmap("C:\\Users\\Lenovo\\Pictures\\bomba normal.jpg");
+    QPixmap bombaPixmap("C:\\Users\\Lenovo\\Documents\\Bomberman\\build\\bomba normal.jpg");
     setPixmap(bombaPixmap.scaled(45, 45));
     setPos(x, y);
 
@@ -18,7 +18,7 @@ Bomba::~Bomba() {
 }
 
 void Bomba::explotar() {
-    QPixmap explosionPixmap("C:\\Users\\Lenovo\\Pictures\\bomba explosion.png");
+    QPixmap explosionPixmap("C:\\Users\\Lenovo\\Documents\\Bomberman\\build\\bomba explosion.png");
     explosionPixmap = explosionPixmap.scaled(45, 45);
     setPixmap(explosionPixmap);
 

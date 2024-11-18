@@ -25,7 +25,6 @@ public:
     void actualizarTiempo();    // Método para actualizar el tiempo
     void CambiarNivel();
 
-    // Getter para el botón empezar (si es necesario)
     QPushButton* getComenzar() const { return comenzar; }
 
 private:
@@ -46,3 +45,4 @@ private:
 };
 
 #endif // JUEGO_H
+

@@ -72,13 +72,6 @@ void Juego::iniciarJuego() {
 void Juego::actualizarTiempo() {
     if (juegoIniciado) {
         tiempo++;
-        if (!tiempoTexto) {
-            tiempoTexto = new QGraphicsTextItem();
-            tiempoTexto->setDefaultTextColor(Qt::black);
-            tiempoTexto->setFont(QFont("Arial", 18));
-            tiempoTexto->setPos(10, 10);
-            addItem(tiempoTexto);
-        }
         tiempoTexto->setPlainText("Tiempo: " + QString::number(tiempo));
     }
 }
@@ -90,9 +83,12 @@ void Juego::CambiarNivel() {
     puntuacionTexto->setPlainText("Puntuación: 0");
 
     oMapa->generarMatriz();
-    oMapa->colocarPuertaAleatoria(sceneActual, pixmapPuerta);  // Colocar la puerta en el nuevo nivel
-    oMapa->dibujarMatriz(sceneActual, pixmapSolido, pixmapDestruible);  // Dibujar los nuevos elementos del mapa
-
-    // Re-iniciar el temporizador si es necesario
-    tiempo_partida->start(1000);  // Reiniciar el temporizador para el nuevo nivel
+    oMapa->colocarPuertaAleatoria(sceneActual, pixmapPuerta);
+    oMapa->dibujarMatriz(sceneActual, pixmapSolido, pixmapDestruible);
+    QPixmap Base("C:\\Users\\Lenovo\\Documents\\Bomberman\\build\\base.jpg");
+    QPixmap Puerta("C:\\Users\\Lenovo\\Documents\\Bomberman\\build\\puerta.png");
+    oMapa->colocarPuertaAleatoria(sceneActual, Puerta);
+    sceneActual->setBackgroundBrush(Base.scaled(sceneActual->sceneRect().width(), sceneActual->sceneRect().height()));
+    tiempo_partida->start(1000);
 }
+

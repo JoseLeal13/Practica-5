@@ -17,7 +17,7 @@ mapa::~mapa() {
 }
 
 void mapa::generarMatriz() {
-    srand(time(nullptr));
+    srand(static_cast<unsigned int>(time(nullptr)));
 
     for (int i = 0; i < filas; i++) {
         for (int j = 0; j < columnas; j++) {
@@ -78,15 +78,12 @@ void mapa::explosionBomba(int x, int y, QGraphicsScene* scene) {
     }
 }
 
-
-
-int** mapa::getmatriz(){
-
+int** mapa::getmatriz() {
     return matriz;
 }
 
 Puerta* mapa::colocarPuertaAleatoria(QGraphicsScene* scene, const QPixmap& pixmapPuerta) {
-    srand(time(nullptr));
+    srand(static_cast<unsigned int>(time(nullptr)));
 
     int i, j;
     do {
@@ -103,19 +100,3 @@ Puerta* mapa::colocarPuertaAleatoria(QGraphicsScene* scene, const QPixmap& pixma
 
     return puerta; // Devuelve la puerta para que otro código maneje la conexión
 }
-
-
-
-/*
-bool mapa::esEspacioLibre(int x, int y) {
-
-    int i = y / 50;
-    int j = x / 50;
-
-    if (i < 0 || i >= filas || j < 0 || j >= columnas) {
-        return false;
-    }
-
-    return matriz[i][j] == 0;
-}
-*/
