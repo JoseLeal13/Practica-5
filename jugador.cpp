@@ -11,7 +11,7 @@ Jugador::Jugador(int startX, int startY, QGraphicsPixmapItem *parent)
     setFocus(); // Otorgar el foco al jugador para recibir eventos de teclado
 
     // Cargar la imagen de la animación (700x622)
-    QPixmap playerPixmap("C:\\Users\\Lenovo\\Documents\\Bomberman\\build\\Mobile - Amazing Bomberman - Bomberman.png");
+    QPixmap playerPixmap(":/Bomberman/build/Mobile - Amazing Bomberman - Bomberman.png");
 
     // Dividir la imagen en los cuadros de animación (6 cuadros)
     for (int i = 0; i < 6; ++i) {

@@ -85,8 +85,8 @@ void Juego::CambiarNivel() {
     oMapa->generarMatriz();
     oMapa->colocarPuertaAleatoria(sceneActual, pixmapPuerta);
     oMapa->dibujarMatriz(sceneActual, pixmapSolido, pixmapDestruible);
-    QPixmap Base("C:\\Users\\Lenovo\\Documents\\Bomberman\\build\\base.jpg");
-    QPixmap Puerta("C:\\Users\\Lenovo\\Documents\\Bomberman\\build\\puerta.png");
+    QPixmap Base(":/Base/build/base.jpg");
+    QPixmap Puerta(":/Base/build/puerta.png");
     oMapa->colocarPuertaAleatoria(sceneActual, Puerta);
     sceneActual->setBackgroundBrush(Base.scaled(sceneActual->sceneRect().width(), sceneActual->sceneRect().height()));
     tiempo_partida->start(1000);

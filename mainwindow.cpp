@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
     view->setGeometry(50, 50, sceneWidth, sceneHeight);
 
     // Fondo del menú de bienvenida
-    QPixmap fondoMenu("C:\\Users\\Lenovo\\Pictures\\bombermanFondo.jpg");
+    QPixmap fondoMenu(":/Base/build/bombermanFondo.jpg");
     scene->setBackgroundBrush(fondoMenu.scaled(sceneWidth, sceneHeight));
 
     // Texto de bienvenida
@@ -75,11 +75,11 @@ void MainWindow::empezarJuego() {
     int columnas = 17;
     int tileSize = 50;  // Tamaño de cada celda en píxeles
 
-    QPixmap Solido = QPixmap("C:\\Users\\Lenovo\\Documents\\Bomberman\\build\\bmpSolido.jpg");
-    QPixmap Destruible = QPixmap("C:\\Users\\Lenovo\\Documents\\Bomberman\\build\\bmpDestruible (1).png");
-    QPixmap Puerta = QPixmap("C:\\Users\\Lenovo\\Documents\\Bomberman\\build\\puerta.png");
+    QPixmap Solido = QPixmap(":/Base/build/bmpSolido.jpg");
+    QPixmap Destruible = QPixmap(":/Base/build/bmpDestruible (1).png");
+    QPixmap Puerta = QPixmap(":/Base/build/puerta.png");
 
-    QPixmap Base("C:\\Users\\Lenovo\\Documents\\Bomberman\\build\\base.jpg");
+    QPixmap Base(":/Base/build/base.jpg");
     scene->setBackgroundBrush(Base.scaled(scene->sceneRect().width(), scene->sceneRect().height()));
 
     // Inicializar QGraphicsView y QGraphicsScene
@@ -89,7 +89,7 @@ void MainWindow::empezarJuego() {
     mapajuego->colocarPuertaAleatoria(scene, Puerta);
 
     // Configuración del jugador
-    QPixmap pixmap("C:\\Users\\Lenovo\\Documents\\Bomberman\\build\\bomberman.png");
+    QPixmap pixmap(":/Bomberman/build/bomberman.png");
     QPixmap scaledPixmap = pixmap.scaled(50, 50, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     jugador = new Jugador(1 * tileSize, 1 * tileSize);
     jugador->setPixmap(scaledPixmap);

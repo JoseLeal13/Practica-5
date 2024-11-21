@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/Bomberman">
+        <file>build/bomberman.png</file>
+        <file>build/Mobile - Amazing Bomberman - Bomberman.png</file>
+    </qresource>
+    <qresource prefix="/Base">
+        <file>build/base.jpg</file>
+        <file>build/bmpDestruible (1).png</file>
+        <file>build/bmpSolido.jpg</file>
+        <file>build/bombermanFondo.jpg</file>
+        <file>build/puerta.png</file>
+    </qresource>
+    <qresource prefix="/Bombas">
+        <file>build/bomba explosion.png</file>
+        <file>build/bomba normal.jpg</file>
+    </qresource>
+</RCC>
